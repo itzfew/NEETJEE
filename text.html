@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEET JEE PREMIUM</title>
+    <style>
+        .menu-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 30px;
+            height: 30px;
+            cursor: pointer;
+            z-index: 9999; /* Ensure menu button stays above other elements */
+        }
+
+        .menu-icon {
+            width: 100%;
+            height: 2px;
+            background-color: #000;
+            position: relative;
+            transition: transform 0.5s;
+        }
+
+        .menu-icon::before,
+        .menu-icon::after {
+            content: '';
+            width: 100%;
+            height: 2px;
+            background-color: #000;
+            position: absolute;
+            transition: transform 0.5s;
+        }
+
+        .menu-icon::before {
+            top: -8px;
+        }
+
+        .menu-icon::after {
+            top: 8px;
+        }
+
+        .menu {
+            position: fixed;
+            top: 0;
+            left: -200px;
+            width: 200px;
+            height: 100%;
+            background-color: #f0f0f0;
+            transition: left 0.5s;
+            z-index: 999; /* Ensure menu stays above other elements */
+        }
+
+        .menu.open {
+            left: 0;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 10px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background-color: transparent;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #ddd;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #dd981e;
+        }
+
+        .main-content {
+            padding: 20px;
+            margin-top: 60px; /* Add margin to create gap between menu button and first file section */
+        }
+
+        .section {
+            border: 1px solid #000;
+            margin-bottom: 20px;
+            padding: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .section:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            height: 1em; /* Adjust the height as needed */
+            vertical-align: middle;
+            margin-right: 10px; /* Add margin between image and text */
+        }
+
+        .toggle-button {
+            cursor: pointer;
+            color: #333;
+            background-color: #fff;
+            border: 1px solid #333;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            display: inline-block;
+        }
+
+        .subfiles {
+            display: none;
+        }
+
+        .subfile {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px; /* Adjust the margin to add the desired gap between subfiles */
+        }
+
+        .subfile:hover {
+            color: blue;
+        }
+
+        .subfile .text {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="menu-btn">
+        <div class="menu-icon"></div>
+    </div>
+
+    <nav class="menu">
+        <ul>
+               <li><h2><a href="https://t.me/NEETPW01">NEET/JEE DISCUSSION</a></h2></li>
+        <li><h2><a href="https://t.me/Free_study_material1">NEET DAILY QUIZZES</a></h2></li>
+        <li><h2><a href="https://t.me/IndianEducationalbot">NEET STUDY MATERIAL</a></h2></li>
+        <li><h2><a href="https://t.me/Yakeen_2_0_2024bot">YAJEEN NEET LECTURES</a></h2></li>
+        <li><h2><a href="https://t.me/NEETJEECHANNEL">MAIN CHANNEL</a></h2></li>
+        </ul>
+    </nav>
+
+    <div class="main-content">
+        <section class="section" onclick="toggleSubfiles(event)">
+            <h2 class="toggle-button">
+                <img src="file_manager_logo.png" alt="File Manager Logo" class="logo"> AKASH TEST SERIES
+            </h2>
+            <div class="subfiles">
+                <div class="subfile">
+                    <img src="file_manager_logo.png" alt="Subfile Logo" class="logo">
+                    <a href="#" class="text">AIATS SERIES</a>
+                </div>
+                <div class="subfile">
+                    <img src="file_manager_logo.png" alt="Subfile Logo" class="logo">
+                    <a href="#" class="text">NBTS SERIES</a>
+                </div>
+                <div class="subfile">
+                    <img src="file_manager_logo.png" alt="Subfile Logo" class="logo">
+                    <a href="#" class="text">FTS SERIES</a>
+                </div>
+                <div class="subfile">
+                    <img src="file_manager_logo.png" alt="Subfile Logo" class="logo">
+                    <a href="#" class="text">PST SERIES</a>
+                </div>
+                <!-- Add more subfiles as needed -->
+            </div>
+        </section>
+        <section class="section" onclick="toggleSubfiles(event)">
+            <h2 class="toggle-button">
+                <img src="file_manager_logo.png" alt="File Manager Logo" class="logo"> ALLEN TEST SERIES 
+            </h2>
+            <div class="subfiles">
+                <div class="subfile">
+                    <img src="file_manager_logo.png" alt="Subfile Logo" class="logo">
+                    <a href="#" class="text">ACHIEVER MAJOR SERIES</a>
+                </div>
+                <div class="subfile">
+                    <img src="file_manager_logo.png" alt="Subfile Logo" class="logo">
+                    <a href="#" class="text">LEADER MAJOR SERIES</a>
+                </div>
+                <div class="subfile">
+                    <img src="file_manager_logo.png" alt="Subfile Logo" class="logo">
+                    <a href="#" class="text">UNIT WISE SERIES</a>
+                </div>
+                <!-- Add more subfiles as needed -->
+            </div>
+        </section>
+        <section class="section" onclick="toggleSubfiles(event)">
+            <h2 class="toggle-button">
+                <img src="file_manager_logo.png" alt="File Manager Logo" class="logo"> PHYSICS WALLAH SERIES 
+            </h2>
+            <div class="subfiles">
+                <div class="subfile">
+                    <img src="file_manager_logo.png" alt="Subfile Logo" class="logo">
+                    <a href="#" class="text">AITS SERIES</a>
+                </div>
+                <div class="subfile">
+                    <img src="file_manager_logo.png" alt="Subfile Logo" class="logo">
+                    <a href="#" class="text">SAMPLE PAPERS </a>
+                </div>
+                <!-- Add more subfiles as needed -->
+            </div>
+        </section>
+        <!-- Add more sections as needed -->
+    </div>
+
+    <script>
+        function toggleSubfiles(event) {
+            var subfiles = event.currentTarget.querySelector('.subfiles');
+            if (subfiles.style.display === 'block') {
+                subfiles.style.display = 'none';
+            } else {
+                subfiles.style.display = 'block';
+            }
+        }
+
+        document.querySelector('.menu-btn').addEventListener('click', function() {
+            document.querySelector('.menu').classList.toggle('open');
+        });
+    </script>
+</body>
+</html>

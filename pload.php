@@ -9,11 +9,11 @@ if ($_FILES['file']['error'] === UPLOAD_ERR_OK) {
   // Move uploaded file to destination
   if (move_uploaded_file($fileTmpPath, $fileUploadPath)) {
     // Send email to admin with file attached
-    $to = 'admin@example.com';
+    $to = 'contactus94@yahoo.com';
     $subject = 'New file uploaded';
     $message = 'A new file has been uploaded by a user.';
-    $headers = 'From: webmaster@example.com' . "\r\n" .
-               'Reply-To: webmaster@example.com' . "\r\n" .
+    $headers = 'From: challawaheed@gmail.com' . "\r\n" .
+               'Reply-To: challawaheed@gmail.com' . "\r\n" .
                'X-Mailer: PHP/' . phpversion();
 
     // Attach file

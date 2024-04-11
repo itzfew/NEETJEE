@@ -39,23 +39,15 @@ if ($_FILES['file']['error'] === UPLOAD_ERR_OK) {
                "--_1_$boundary--";
     
     // Send email to admin
-    mail($to_owner, $subject_owner, $message_owner, $headers_owner);
-
-    // Send email to user
-    $to_user = 'challawaheed@gmail.com';
-    $subject_user = 'File upload confirmation';
-    $message_user = 'Your file has been successfully uploaded. Thank you!';
-    $headers_user = 'From: contactus94@yahoo.com' . "\r\n" .
-               'Reply-To: contactus94@yahoo.com' . "\r\n" .
-               'X-Mailer: PHP/' . phpversion();
-    
-    mail($to_user, $subject_user, $message_user, $headers_user);
-
-    echo json_encode(['success' => true]);
+    if (mail($to_owner, $subject_owner, $message_owner, $headers_owner)) {
+      echo json_encode(['success' => true]);
+    } else {
+      echo json_encode(['success' => false, 'error' => 'Failed to send email to admin.']);
+    }
   } else {
-    echo json_encode(['success' => false]);
+    echo json_encode(['success' => false, 'error' => 'Failed to move uploaded file to destination.']);
   }
 } else {
-  echo json_encode(['success' => false]);
+  echo json_encode(['success' => false, 'error' => 'File upload error: ' . $_FILES['file']['error']]);
 }
 ?>

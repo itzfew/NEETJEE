@@ -17,7 +17,15 @@
         margin-top: 50px;
     }
 
-    .questionBtn {
+    .questionInput {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 12px;
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+    }
+
+    .generateBtn {
         background-color: #4CAF50;
         border: none;
         color: white;
@@ -32,7 +40,7 @@
         border-radius: 12px;
     }
 
-    .questionBtn:hover {
+    .generateBtn:hover {
         background-color: #45a049;
     }
 
@@ -81,11 +89,8 @@
 <h1>GENERATE OMR SHEET</h1>
 
 <div class="container">
-    <button class="questionBtn" data-questions="15"> (15 Questions)</button>
-    <button class="questionBtn" data-questions="30"> (30 Questions)</button>
-    <button class="questionBtn" data-questions="50"> (50 Questions)</button>
-    <button class="questionBtn" data-questions="180"> (180 Questions)</button>
-    <button class="questionBtn" data-questions="200"> (200 Questions)</button>
+    <input type="number" id="numQuestions" class="questionInput" placeholder="Enter number of questions">
+    <button class="generateBtn">Generate OMR</button>
 </div>
   
 <div id="imageContainer"></div>
@@ -94,8 +99,7 @@
 <p class="credit">Created by: <a href="https://t.me/NEETJEECHANNEL" target="_blank">Telegram - @NEETJEECHANNEL</a></p>
 
 <script>
-    // JavaScript code goes here
-// Function to generate OMR image based on the selected number of questions
+    // Function to generate OMR image based on the selected number of questions
 function generateOMR(numQuestions) {
     const imageContainer = document.getElementById("imageContainer");
     imageContainer.innerHTML = ""; // Clear previous image if any
@@ -164,17 +168,10 @@ function generateOMR(numQuestions) {
     const downloadBtn = document.getElementById("downloadBtn");
     downloadBtn.style.display = "block";
 
-    // Download image on button click
-    downloadBtn.addEventListener("click", function() {
-        const dataURL = canvas.toDataURL();
-        const a = document.createElement("a");
-        a.href = dataURL;
-        a.download = "OMR_image.png";
-        a.style.display = "none";
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    });
+    // Store the generated canvas for download
+    downloadBtn.onclick = function() {
+        downloadOMR(canvas);
+    };
 }
 
 // Function to create canvas and return its context
@@ -187,41 +184,28 @@ function createCanvas(parent, width, height) {
     return { canvas: canvas, ctx: ctx };
 }
 
-// Event listener for question buttons
-const questionBtns = document.querySelectorAll(".questionBtn");
-questionBtns.forEach(btn => {
-    btn.addEventListener("click", function() {
-        const numQuestions = parseInt(this.getAttribute("data-questions"));
-        generateOMR(numQuestions);
-
-        // Show form after selecting the number of questions
-        document.getElementById("textForm").style.display = "block";
-    });
-});
-
-// Event listener for form submission
-document.getElementById("textForm").addEventListener("submit", function(event) {
-    event.preventDefault();
-    // Handle form submission if needed
-});
-</script>
-<script>
-downloadBtn.addEventListener("click", function() {
+// Function to download the current OMR image
+function downloadOMR(canvas) {
     const dataURL = canvas.toDataURL();
-    fetch(dataURL)
-    .then(response => response.blob())
-    .then(blob => {
-        const file = new File([blob], "OMR_image.png", { type: blob.type });
-        const url = URL.createObjectURL(file);
+    const a = document.createElement("a");
+    a.href = dataURL;
+    a.download = "OMR_image.png";
+    a.style.display = "none";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
 
-        // Save file to internal storage using your app's existing method
-        saveImageToInternalStorage(url); // Call your existing JavaScript function to save the image
-
-        // Clean up
-        URL.revokeObjectURL(url);
-    });
+// Event listener for generating OMR sheet
+document.querySelector(".generateBtn").addEventListener("click", function() {
+    const numQuestions = parseInt(document.getElementById("numQuestions").value);
+    if (numQuestions > 0) {
+        generateOMR(numQuestions);
+    } else {
+        alert("Please enter a valid number of questions.");
+    }
 });
-
 </script>
+
 </body>
 </html>

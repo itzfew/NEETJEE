@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OMR Generator</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+    }
+
+    .container {
+        margin-top: 50px;
+    }
+
+    .questionBtn {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        transition-duration: 0.4s;
+        cursor: pointer;
+        border-radius: 12px;
+    }
+
+    .questionBtn:hover {
+        background-color: #45a049;
+    }
+
+    #downloadBtn {
+        background-color: #008CBA;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin-top: 20px;
+        transition-duration: 0.4s;
+        cursor: pointer;
+        border-radius: 12px;
+    }
+
+    #downloadBtn:hover {
+        background-color: #00688B;
+    }
+
+    .credit {
+        margin-top: 20px;
+        font-size: 14px;
+    }
+
+    .credit a {
+        color: #333;
+        text-decoration: none;
+    }
+
+    .credit a:hover {
+        text-decoration: underline;
+    }
+
+    h1 {
+        color: #333;
+        font-weight: bold;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+</style>
+</head>
+<body>
+
+<h1>GENERATE OMR SHEET</h1>
+
+<div class="container">
+    <button class="questionBtn" data-questions="15"> (15 Questions)</button>
+    <button class="questionBtn" data-questions="30"> (30 Questions)</button>
+    <button class="questionBtn" data-questions="50"> (50 Questions)</button>
+    <button class="questionBtn" data-questions="180"> (180 Questions)</button>
+    <button class="questionBtn" data-questions="200"> (200 Questions)</button>
+</div>
+  
+<div id="imageContainer"></div>
+<button id="downloadBtn" style="display: none;">Download OMR</button>
+
+<p class="credit">Created by: <a href="https://t.me/NEETJEECHANNEL" target="_blank">Telegram - @NEETJEECHANNEL</a></p>
+
+<script>
+    // JavaScript code goes here
+// Function to generate OMR image based on the selected number of questions
+function generateOMR(numQuestions) {
+    const imageContainer = document.getElementById("imageContainer");
+    imageContainer.innerHTML = ""; // Clear previous image if any
+
+    const numColumns = 4; // Constant number of columns
+    const numRows = Math.ceil(numQuestions / (numColumns * 5)); // Adjust rows based on questions
+    const canvasWidth = numColumns * 200 + 20; // Adjusted width for border
+    const canvasHeight = numRows * 120 + 20; // Adjusted height for border
+    const canvasData = createCanvas(imageContainer, canvasWidth, canvasHeight);
+
+    const canvas = canvasData.canvas;
+    const ctx = canvasData.ctx;
+
+    let questionCount = 0;
+    for (let row = 0; row < numRows; row++) {
+        for (let col = 0; col < numColumns; col++) {
+            const startX = col * 200 + 10; // Adjusted for border
+            const startY = row * 120 + 10; // Adjusted for border
+
+            // Draw border box
+            ctx.beginPath();
+            ctx.rect(startX, startY, 200, 120); // Adjusted height for small gap
+            ctx.stroke();
+
+            // Draw 5 questions
+
+            for (let i = 0; i < 5; i++) {
+                if (questionCount >= numQuestions) break;
+
+                const question = `Q${questionCount + 1}:`;
+                const questionX = startX + 10;
+                const questionY = startY + 30 + (i * 20);
+                ctx.fillText(question, questionX, questionY);
+
+                // Draw options with reduced gap
+                const optionStartX = startX + 50;
+                const optionStartY = startY + 26 + (i * 20);
+                const options = ['A', 'B', 'C', 'D'];
+                options.forEach((option, index) => {
+                    const optionX = optionStartX + (index * 40);
+                    const optionY = optionStartY;
+                    
+                    // Draw circle for each option
+                    ctx.beginPath();
+                    ctx.arc(optionX, optionY, 8, 0, Math.PI * 2);
+                    ctx.stroke();
+                    
+                    // Position the option text
+                    ctx.fillText(option, optionX - 3, optionY + 3); 
+                });
+
+                questionCount++;
+            }
+
+        }
+    }
+
+    // Draw border around the canvas
+    ctx.beginPath();
+    ctx.rect(0, 0, canvasWidth, canvasHeight);
+    ctx.lineWidth = 5; // Border line width
+    ctx.strokeStyle = "#000"; // Border color
+    ctx.stroke();
+
+    // Show download button
+    const downloadBtn = document.getElementById("downloadBtn");
+    downloadBtn.style.display = "block";
+
+    // Download image on button click
+    downloadBtn.addEventListener("click", function() {
+        const dataURL = canvas.toDataURL();
+        const a = document.createElement("a");
+        a.href = dataURL;
+        a.download = "OMR_image.png";
+        a.style.display = "none";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    });
+}
+
+// Function to create canvas and return its context
+function createCanvas(parent, width, height) {
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    parent.appendChild(canvas);
+    const ctx = canvas.getContext("2d");
+    return { canvas: canvas, ctx: ctx };
+}
+
+// Event listener for question buttons
+const questionBtns = document.querySelectorAll(".questionBtn");
+questionBtns.forEach(btn => {
+    btn.addEventListener("click", function() {
+        const numQuestions = parseInt(this.getAttribute("data-questions"));
+        generateOMR(numQuestions);
+
+        // Show form after selecting the number of questions
+        document.getElementById("textForm").style.display = "block";
+    });
+});
+
+// Event listener for form submission
+document.getElementById("textForm").addEventListener("submit", function(event) {
+    event.preventDefault();
+    // Handle form submission if needed
+});
+</script>
+<script>
+downloadBtn.addEventListener("click", function() {
+    const dataURL = canvas.toDataURL();
+    fetch(dataURL)
+    .then(response => response.blob())
+    .then(blob => {
+        const file = new File([blob], "OMR_image.png", { type: blob.type });
+        const url = URL.createObjectURL(file);
+
+        // Save file to internal storage using your app's existing method
+        saveImageToInternalStorage(url); // Call your existing JavaScript function to save the image
+
+        // Clean up
+        URL.revokeObjectURL(url);
+    });
+});
+
+</script>
+</body>
+</html>

@@ -10,6 +10,7 @@ services:
         value: your-cashfree-app-id  # Set Cashfree App ID
       - key: CASHFREE_SECRET_KEY
         value: your-cashfree-secret-key  # Set Cashfree Secret Key
+    plan: starter
 
   # Backend service to run the Node.js server
   - type: web

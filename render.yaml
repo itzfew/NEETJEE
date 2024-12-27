@@ -4,7 +4,7 @@ services:
     name: neet-jee-book-store-frontend
     env: static
     buildCommand: echo "No build step needed"
-    publishDirectory: frontend
+    publishDirectory: ./frontend
     envVars:
       - key: CASHFREE_APP_ID
         value: your-cashfree-app-id  # Set Cashfree App ID

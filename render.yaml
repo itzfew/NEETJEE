@@ -1,1 +1,26 @@
+services:
+  # Frontend service to serve static files
+  - type: static_site
+    name: neet-jee-book-store-frontend
+    env: static
+    buildCommand: echo "No build step needed"
+    publishDirectory: frontend
+    envVars:
+      - key: CASHFREE_APP_ID
+        value: your-cashfree-app-id  # Set Cashfree App ID
+      - key: CASHFREE_SECRET_KEY
+        value: your-cashfree-secret-key  # Set Cashfree Secret Key
+
+  # Backend service to run the Node.js server
+  - type: web
+    name: neet-jee-book-store-backend
+    env: node
+    buildCommand: npm install
+    startCommand: node backend/server.js
+    envVars:
+      - key: CASHFREE_APP_ID
+        value: your-cashfree-app-id  # Set Cashfree App ID
+      - key: CASHFREE_SECRET_KEY
+        value: your-cashfree-secret-key  # Set Cashfree Secret Key
+    plan: starter
 

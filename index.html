@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Book Store - Buy NEET & JEE Books</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-
+    
     <style>
         /* Basic Reset */
         * {
@@ -194,6 +194,47 @@
         .cart-modal-content button:hover {
             background-color: #555;
         }
+
+        /* Checkout Steps */
+        .checkout-step {
+            display: none;
+            padding: 20px;
+        }
+
+        .checkout-step.active {
+            display: block;
+        }
+
+        .checkout-form input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+
+        .checkout-form button {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .checkout-form button:hover {
+            background-color: #555;
+        }
+
+        .order-summary {
+            text-align: left;
+            margin-top: 20px;
+        }
+
+        .order-summary span {
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -204,7 +245,6 @@
                 <ul>
                     <li><a href="#home">Home</a></li>
                     <li><a href="#products">Books</a></li>
-                    <li><a href="#contact">Contact</a></li>
                     <li><a href="#cart" id="cart-link">Cart (<span id="cart-count">0</span>)</a></li>
                 </ul>
             </nav>
@@ -267,13 +307,63 @@
         </div>
     </div>
 
+    <!-- Checkout Flow -->
+    <div id="checkout" class="checkout-step">
+        <h3>Step 1: Shipping Information</h3>
+        <form id="shipping-form" class="checkout-form">
+            <input type="text" id="full-name" placeholder="Full Name" required>
+            <input type="text" id="address" placeholder="Address" required>
+            <input type="text" id="phone" placeholder="Phone Number" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <button type="button" id="next-step">Next</button>
+        </form>
+    </div>
+
+    <div id="payment" class="checkout-step">
+        <h3>Step 2: Payment Information</h3>
+        <form id="payment-form" class="checkout-form">
+            <input type="text" id="card-number" placeholder="Card Number" required>
+            <input type="text" id="expiry-date" placeholder="MM/YY" required>
+            <input type="text" id="cvv" placeholder="CVV" required>
+            <button type="button" id="complete-payment">Complete Payment</button>
+        </form>
+    </div>
+
+    <div id="confirmation" class="checkout-step">
+        <h3>Thank You for Your Purchase!</h3>
+        <div class="order-summary">
+            <p>Order Total: ₹<span id="order-total"></span></p>
+            <p>Your order is being processed. You will receive an email confirmation shortly.</p>
+        </div>
+        <button id="go-home">Go to Home</button>
+    </div>
+
     <script>
-        let cart = [];
         const products = [
             { id: 1, name: "NEET Biology", price: 500 },
             { id: 2, name: "JEE Physics", price: 800 },
             { id: 3, name: "NEET Chemistry", price: 600 }
         ];
+
+        let cart = [];
+        let totalPrice = 0;
+
+        // Update Cart UI
+        function updateCartUI() {
+            document.getElementById('cart-count').innerText = cart.length;
+            const cartItems = document.getElementById('cart-items');
+            cartItems.innerHTML = '';
+            totalPrice = 0;
+
+            cart.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.innerText = `${item.name} - ₹${item.price}`;
+                cartItems.appendChild(listItem);
+                totalPrice += item.price;
+            });
+
+            document.getElementById('cart-total').innerText = totalPrice;
+        }
 
         // Add product to cart
         document.querySelectorAll('.add-to-cart').forEach(button => {
@@ -285,34 +375,64 @@
             });
         });
 
-        // Update cart UI
-        function updateCartUI() {
-            // Update cart count
-            document.getElementById('cart-count').innerText = cart.length;
-
-            // Update cart items list
-            const cartItems = document.getElementById('cart-items');
-            cartItems.innerHTML = '';
-            cart.forEach(item => {
-                const listItem = document.createElement('li');
-                listItem.innerText = `${item.name} - ₹${item.price}`;
-                cartItems.appendChild(listItem);
-            });
-
-            // Update total price
-            const total = cart.reduce((sum, item) => sum + item.price, 0);
-            document.getElementById('cart-total').innerText = total;
-        }
-
-        // Open the cart modal
+        // Open Cart Modal
         document.getElementById('cart-link').addEventListener('click', function (e) {
             e.preventDefault();
             document.getElementById('cart-modal').style.display = 'flex';
         });
 
-        // Close the cart modal
+        // Close Cart Modal
         document.getElementById('close-cart-btn').addEventListener('click', function () {
             document.getElementById('cart-modal').style.display = 'none';
+        });
+
+        // Checkout Step 1 (Shipping Information)
+        document.getElementById('checkout-btn').addEventListener('click', function () {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+            document.getElementById('cart-modal').style.display = 'none';
+            document.getElementById('checkout').classList.add('active');
+        });
+
+        // Proceed to Payment (Step 2)
+        document.getElementById('next-step').addEventListener('click', function () {
+            const name = document.getElementById('full-name').value;
+            const address = document.getElementById('address').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+
+            if (!name || !address || !phone || !email) {
+                alert('Please fill in all fields!');
+                return;
+            }
+
+            document.getElementById('checkout').classList.remove('active');
+            document.getElementById('payment').classList.add('active');
+        });
+
+        // Complete Payment
+        document.getElementById('complete-payment').addEventListener('click', function () {
+            const cardNumber = document.getElementById('card-number').value;
+            const expiryDate = document.getElementById('expiry-date').value;
+            const cvv = document.getElementById('cvv').value;
+
+            if (!cardNumber || !expiryDate || !cvv) {
+                alert('Please fill in all payment details!');
+                return;
+            }
+
+            document.getElementById('payment').classList.remove('active');
+            document.getElementById('confirmation').classList.add('active');
+
+            // Display the total price in the confirmation screen
+            document.getElementById('order-total').innerText = totalPrice;
+        });
+
+        // Go Back to Home Page
+        document.getElementById('go-home').addEventListener('click', function () {
+            location.reload();
         });
     </script>
 </body>

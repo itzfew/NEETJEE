@@ -1,16 +1,24 @@
 const express = require('express');
 const crypto = require('crypto');
+const path = require('path');
 const app = express();
+const port = process.env.PORT || 3000;
 
+// Cashfree credentials (use environment variables for security)
+const CASHFREE_APP_ID = process.env.CASHFREE_APP_ID;
+const CASHFREE_SECRET_KEY = process.env.CASHFREE_SECRET_KEY;
+
+// Middleware to serve static files
+app.use(express.static(path.join(__dirname, '../frontend')));
+
+// Parse JSON data
 app.use(express.json());
 
-const CASHFREE_APP_ID = 'YOUR_APP_ID';
-const CASHFREE_SECRET_KEY = 'YOUR_SECRET_KEY';
-
+// Endpoint to create order and signature for Cashfree
 app.post('/create_order', (req, res) => {
     const { cart, totalPrice } = req.body;
 
-    // Generate a unique order ID
+    // Generate a unique order ID (usually from the backend)
     const orderId = 'ORDER_' + Date.now();
 
     // Prepare the signature data
@@ -22,7 +30,7 @@ app.post('/create_order', (req, res) => {
         customer_phone: '9999999999', // Replace with actual customer phone
     };
 
-    // Create a signature
+    // Generate Cashfree signature using HMAC SHA256
     const signatureData = `${data.order_id}|${data.order_amount}|${CASHFREE_APP_ID}`;
     const signature = crypto.createHmac('sha256', CASHFREE_SECRET_KEY).update(signatureData).digest('hex');
 
@@ -33,6 +41,12 @@ app.post('/create_order', (req, res) => {
     });
 });
 
-app.listen(3000, () => {
-    console.log('Server is running on port 3000');
+// Serve the frontend index.html when visiting the root route
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/index.html'));
+});
+
+// Start the server
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
 });

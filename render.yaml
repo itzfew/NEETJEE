@@ -7,9 +7,9 @@ services:
     publishDirectory: ./frontend
     envVars:
       - key: CASHFREE_APP_ID
-        value: your-cashfree-app-id  # Set Cashfree App ID
+        value: 605266b66d4c81295df88e013e662506  # Set Cashfree App ID
       - key: CASHFREE_SECRET_KEY
-        value: your-cashfree-secret-key  # Set Cashfree Secret Key
+        value: cfsk_ma_prod_3d5c1e52a60832d47f1eb1af9045d1c2_4b948447  # Set Cashfree Secret Key
     plan: starter
 
   # Backend service to run the Node.js server
@@ -20,7 +20,7 @@ services:
     startCommand: node backend/server.js
     envVars:
       - key: CASHFREE_APP_ID
-        value: your-cashfree-app-id  # Set Cashfree App ID
+        value: 605266b66d4c81295df88e013e662506  # Set Cashfree App ID
       - key: CASHFREE_SECRET_KEY
-        value: your-cashfree-secret-key  # Set Cashfree Secret Key
+        value: cfsk_ma_prod_3d5c1e52a60832d47f1eb1af9045d1c2_4b948447  # Set Cashfree Secret Key
     plan: starter

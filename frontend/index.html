@@ -267,7 +267,7 @@
                 <h3>NEET Biology</h3>
                 <p>A comprehensive guide for NEET Biology preparation.</p>
                 <p class="price">₹500</p>
-                <button class="add-to-cart" data-product-id="1">Add to Cart</button>
+                <button class="add-to-cart" data-product-id="1" data-product-name="NEET Biology" data-product-price="500">Add to Cart</button>
             </div>
             <!-- Book 2 -->
             <div class="product-card">
@@ -275,7 +275,7 @@
                 <h3>JEE Physics</h3>
                 <p>Master Physics for JEE Advanced with this book.</p>
                 <p class="price">₹800</p>
-                <button class="add-to-cart" data-product-id="2">Add to Cart</button>
+                <button class="add-to-cart" data-product-id="2" data-product-name="JEE Physics" data-product-price="800">Add to Cart</button>
             </div>
             <!-- Book 3 -->
             <div class="product-card">
@@ -283,7 +283,7 @@
                 <h3>NEET Chemistry</h3>
                 <p>Essential NEET Chemistry concepts in a single book.</p>
                 <p class="price">₹600</p>
-                <button class="add-to-cart" data-product-id="3">Add to Cart</button>
+                <button class="add-to-cart" data-product-id="3" data-product-name="NEET Chemistry" data-product-price="600">Add to Cart</button>
             </div>
         </div>
     </section>
@@ -322,9 +322,7 @@
     <div id="payment" class="checkout-step">
         <h3>Step 2: Payment Information</h3>
         <form id="payment-form" class="checkout-form">
-            <input type="text" id="card-number" placeholder="Card Number" required>
-            <input type="text" id="expiry-date" placeholder="MM/YY" required>
-            <input type="text" id="cvv" placeholder="CVV" required>
+            <input type="hidden" id="order-id">
             <button type="button" id="complete-payment">Complete Payment</button>
         </form>
     </div>
@@ -369,7 +367,10 @@
         document.querySelectorAll('.add-to-cart').forEach(button => {
             button.addEventListener('click', function () {
                 const productId = parseInt(this.getAttribute('data-product-id'));
-                const product = products.find(p => p.id === productId);
+                const productName = this.getAttribute('data-product-name');
+                const productPrice = parseInt(this.getAttribute('data-product-price'));
+
+                const product = { id: productId, name: productName, price: productPrice };
                 cart.push(product);
                 updateCartUI();
             });
@@ -410,24 +411,43 @@
 
             document.getElementById('checkout').classList.remove('active');
             document.getElementById('payment').classList.add('active');
+            
+            // Call backend to generate order ID & signature
+            fetch('/create_order', {
+                method: 'POST',
+                body: JSON.stringify({ cart, totalPrice }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('order-id').value = data.order_id;
+            })
+            .catch(error => alert('Error creating order: ' + error.message));
         });
 
         // Complete Payment
         document.getElementById('complete-payment').addEventListener('click', function () {
-            const cardNumber = document.getElementById('card-number').value;
-            const expiryDate = document.getElementById('expiry-date').value;
-            const cvv = document.getElementById('cvv').value;
+            const orderId = document.getElementById('order-id').value;
 
-            if (!cardNumber || !expiryDate || !cvv) {
-                alert('Please fill in all payment details!');
+            if (!orderId) {
+                alert('Order ID is missing!');
                 return;
             }
 
-            document.getElementById('payment').classList.remove('active');
-            document.getElementById('confirmation').classList.add('active');
+            // Redirect to Cashfree Payment Gateway
+            const params = {
+                order_id: orderId,
+                order_amount: totalPrice,
+                customer_name: document.getElementById('full-name').value,
+                customer_email: document.getElementById('email').value,
+                customer_phone: document.getElementById('phone').value
+            };
 
-            // Display the total price in the confirmation screen
-            document.getElementById('order-total').innerText = totalPrice;
+            const url = `https://test.cashfree.com/billpay/checkout/post/submit?order_id=${params.order_id}&order_amount=${params.order_amount}&order_currency=INR`;
+
+            window.location.href = url;
         });
 
         // Go Back to Home Page

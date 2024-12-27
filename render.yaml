@@ -1,6 +1,6 @@
 services:
-  # Frontend service to serve static files
-  - type: static_site
+  # Frontend service to serve static files (HTML, CSS, JS)
+  - type: web
     name: neet-jee-book-store-frontend
     env: static
     buildCommand: echo "No build step needed"
@@ -23,4 +23,3 @@ services:
       - key: CASHFREE_SECRET_KEY
         value: your-cashfree-secret-key  # Set Cashfree Secret Key
     plan: starter
-

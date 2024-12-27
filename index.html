@@ -3,232 +3,316 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEET JEE PREMIUM</title>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Book Store - Buy NEET & JEE Books</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
     <style>
-        .menu-btn {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            width: 30px;
-            height: 30px;
-            cursor: pointer;
-            z-index: 9999; /* Ensure menu button stays above other elements */
-        }
-
-        .menu-icon {
-            width: 100%;
-            height: 2px;
-            background-color: #000;
-            position: relative;
-            transition: transform 0.5s;
-        }
-
-        .menu-icon::before,
-        .menu-icon::after {
-            content: '';
-            width: 100%;
-            height: 2px;
-            background-color: #000;
-            position: absolute;
-            transition: transform 0.5s;
-        }
-
-        .menu-icon::before {
-            top: -8px;
-        }
-
-        .menu-icon::after {
-            top: 8px;
-        }
-
-        .menu {
-            position: fixed;
-            top: 0;
-            left: -200px;
-            width: 200px;
-            height: 100%;
-            background-color: #f0f0f0;
-            transition: left 0.5s;
-            z-index: 999; /* Ensure menu stays above other elements */
-        }
-
-        .menu.open {
-            left: 0;
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        li {
-            padding: 10px;
-        }
-
-        button {
-            width: 100%;
-            padding: 10px;
-            border: none;
-            background-color: transparent;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: #ddd;
-        }
-
-        body {
-            font-family: Arial, sans-serif;
+        /* Basic Reset */
+        * {
             margin: 0;
             padding: 0;
-            background-color: #dd981e;
+            box-sizing: border-box;
         }
 
-        .main-content {
-            padding: 20px;
-            margin-top: 60px; /* Add margin to create gap between menu button and first file section */
+        /* Body Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: white;
+            color: black;
         }
 
-        .section {
-            border: 1px solid #000;
-            margin-bottom: 20px;
-            padding: 10px;
-            transition: all 0.3s ease;
+        /* Header */
+        header {
+            background-color: #333;
+            padding: 15px 0;
         }
 
-        .section:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.3);
-        }
-
-        .logo {
-            height: 1em; /* Adjust the height as needed */
-            vertical-align: middle;
-            margin-right: 10px; /* Add margin between image and text */
-        }
-
-        .toggle-button {
-            cursor: pointer;
-            color: #333;
-            background-color: #fff;
-            border: 1px solid #333;
-            padding: 5px 10px;
-            border-radius: 5px;
-            margin-bottom: 10px;
-            display: inline-block;
-        }
-
-        .subfiles {
-            display: none;
-        }
-
-        .subfile {
-            cursor: pointer;
+        .header-container {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px; /* Adjust the margin to add the desired gap between subfiles */
+            padding: 0 20px;
         }
 
-        .subfile:hover {
-            color: blue;
+        header h1 {
+            color: white;
         }
 
-        .subfile .text {
-            margin-left: 10px;
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        /* Banner Section */
+        .banner {
+            background-color: #000;
+            color: white;
+            text-align: center;
+            padding: 50px 0;
+        }
+
+        .banner h2 {
+            font-size: 2.5em;
+        }
+
+        .banner p {
+            font-size: 1.2em;
+        }
+
+        /* Products Section */
+        .products-section {
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .products-section h2 {
+            font-size: 2em;
+            margin-bottom: 30px;
+        }
+
+        .product-list {
+            display: flex;
+            justify-content: space-around;
+            gap: 30px;
+        }
+
+        .product-card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            width: 200px;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+
+        .product-card img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        .product-card .price {
+            font-size: 1.2em;
+            color: green;
+            margin-top: 10px;
+        }
+
+        .product-card button {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .product-card button:hover {
+            background-color: #555;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.1em;
+        }
+
+        .footer-links a:hover {
+            color: #f1f1f1;
+        }
+
+        /* Cart Modal */
+        .cart-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cart-modal-content {
+            background-color: white;
+            padding: 30px;
+            width: 300px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .cart-modal-content h3 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+        }
+
+        .cart-modal-content ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 20px;
+        }
+
+        .cart-modal-content ul li {
+            margin-bottom: 10px;
+        }
+
+        .cart-modal-content button {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .cart-modal-content button:hover {
+            background-color: #555;
         }
     </style>
 </head>
 <body>
-    <div class="menu-btn">
-        <div class="menu-icon"></div>
-    </div>
+    <header>
+        <div class="header-container">
+            <h1>Book Store</h1>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#products">Books</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#cart" id="cart-link">Cart (<span id="cart-count">0</span>)</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
 
-    <nav class="menu">
-        <ul>
-               <li><h2><a href="https://t.me/NEETPW01">NEET/JEE DISCUSSION</a></h2></li>
-        <li><h2><a href="https://t.me/Free_study_material1">NEET DAILY QUIZZES</a></h2></li>
-        <li><h2><a href="https://t.me/IndianEducationalbot">NEET STUDY MATERIAL</a></h2></li>
-        <li><h2><a href="https://t.me/Yakeen_2_0_2024bot">YAJEEN NEET LECTURES</a></h2></li>
-        <li><h2><a href="https://t.me/NEETJEECHANNEL">MAIN CHANNEL</a></h2></li>
-        </ul>
-    </nav>
+    <section id="home" class="banner">
+        <div class="banner-content">
+            <h2>Welcome to Our NEET & JEE Book Store</h2>
+            <p>Your one-stop shop for top books to crack NEET & JEE exams!</p>
+        </div>
+    </section>
 
-    <div class="main-content">
-        <section class="section" onclick="toggleSubfiles(event)">
-            <h2 class="toggle-button">
-                <img src="file_manager_logo.png" alt="File Manager Logo" class="logo"> AKASH TEST SERIES
-            </h2>
-            <div class="subfiles">
-                <div class="subfile">
-                    <img src="file_manager_logo.png" alt="Subfile Logo" class="logo">
-                    <a href="#" class="text">AIATS SERIES</a>
-                </div>
-                <div class="subfile">
-                    <img src="file_manager_logo.png" alt="Subfile Logo" class="logo">
-                    <a href="#" class="text">NBTS SERIES</a>
-                </div>
-                <div class="subfile">
-                    <img src="file_manager_logo.png" alt="Subfile Logo" class="logo">
-                    <a href="#" class="text">FTS SERIES</a>
-                </div>
-                <div class="subfile">
-                    <img src="file_manager_logo.png" alt="Subfile Logo" class="logo">
-                    <a href="#" class="text">PST SERIES</a>
-                </div>
-                <!-- Add more subfiles as needed -->
+    <section id="products" class="products-section">
+        <h2>Our Featured Books</h2>
+        <div class="product-list">
+            <!-- Book 1 -->
+            <div class="product-card">
+                <img src="https://via.placeholder.com/150" alt="Book 1">
+                <h3>NEET Biology</h3>
+                <p>A comprehensive guide for NEET Biology preparation.</p>
+                <p class="price">₹500</p>
+                <button class="add-to-cart" data-product-id="1">Add to Cart</button>
             </div>
-        </section>
-        <section class="section" onclick="toggleSubfiles(event)">
-            <h2 class="toggle-button">
-                <img src="file_manager_logo.png" alt="File Manager Logo" class="logo"> ALLEN TEST SERIES 
-            </h2>
-            <div class="subfiles">
-                <div class="subfile">
-                    <img src="file_manager_logo.png" alt="Subfile Logo" class="logo">
-                    <a href="#" class="text">ACHIEVER MAJOR SERIES</a>
-                </div>
-                <div class="subfile">
-                    <img src="file_manager_logo.png" alt="Subfile Logo" class="logo">
-                    <a href="#" class="text">LEADER MAJOR SERIES</a>
-                </div>
-                <div class="subfile">
-                    <img src="file_manager_logo.png" alt="Subfile Logo" class="logo">
-                    <a href="#" class="text">UNIT WISE SERIES</a>
-                </div>
-                <!-- Add more subfiles as needed -->
+            <!-- Book 2 -->
+            <div class="product-card">
+                <img src="https://via.placeholder.com/150" alt="Book 2">
+                <h3>JEE Physics</h3>
+                <p>Master Physics for JEE Advanced with this book.</p>
+                <p class="price">₹800</p>
+                <button class="add-to-cart" data-product-id="2">Add to Cart</button>
             </div>
-        </section>
-        <section class="section" onclick="toggleSubfiles(event)">
-            <h2 class="toggle-button">
-                <img src="file_manager_logo.png" alt="File Manager Logo" class="logo"> PHYSICS WALLAH SERIES 
-            </h2>
-            <div class="subfiles">
-                <div class="subfile">
-                    <img src="file_manager_logo.png" alt="Subfile Logo" class="logo">
-                    <a href="#" class="text">AITS SERIES</a>
-                </div>
-                <div class="subfile">
-                    <img src="file_manager_logo.png" alt="Subfile Logo" class="logo">
-                    <a href="#" class="text">SAMPLE PAPERS </a>
-                </div>
-                <!-- Add more subfiles as needed -->
+            <!-- Book 3 -->
+            <div class="product-card">
+                <img src="https://via.placeholder.com/150" alt="Book 3">
+                <h3>NEET Chemistry</h3>
+                <p>Essential NEET Chemistry concepts in a single book.</p>
+                <p class="price">₹600</p>
+                <button class="add-to-cart" data-product-id="3">Add to Cart</button>
             </div>
-        </section>
-        <!-- Add more sections as needed -->
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-links">
+            <a href="https://itzfew.github.io/NEETJEE/TermsAndConditions.html" target="_blank"><i class="fas fa-file-alt"></i> Terms and Conditions</a>
+            <a href="https://itzfew.github.io/NEETJEE/Contact.html" target="_blank"><i class="fas fa-phone-alt"></i> Contact</a>
+        </div>
+    </footer>
+
+    <!-- Shopping Cart Modal -->
+    <div id="cart-modal" class="cart-modal">
+        <div class="cart-modal-content">
+            <h3>Your Cart</h3>
+            <ul id="cart-items"></ul>
+            <p>Total: ₹<span id="cart-total">0</span></p>
+            <button id="checkout-btn">Proceed to Checkout</button>
+            <button id="close-cart-btn">Close</button>
+        </div>
     </div>
 
     <script>
-        function toggleSubfiles(event) {
-            var subfiles = event.currentTarget.querySelector('.subfiles');
-            if (subfiles.style.display === 'block') {
-                subfiles.style.display = 'none';
-            } else {
-                subfiles.style.display = 'block';
-            }
+        let cart = [];
+        const products = [
+            { id: 1, name: "NEET Biology", price: 500 },
+            { id: 2, name: "JEE Physics", price: 800 },
+            { id: 3, name: "NEET Chemistry", price: 600 }
+        ];
+
+        // Add product to cart
+        document.querySelectorAll('.add-to-cart').forEach(button => {
+            button.addEventListener('click', function () {
+                const productId = parseInt(this.getAttribute('data-product-id'));
+                const product = products.find(p => p.id === productId);
+                cart.push(product);
+                updateCartUI();
+            });
+        });
+
+        // Update cart UI
+        function updateCartUI() {
+            // Update cart count
+            document.getElementById('cart-count').innerText = cart.length;
+
+            // Update cart items list
+            const cartItems = document.getElementById('cart-items');
+            cartItems.innerHTML = '';
+            cart.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.innerText = `${item.name} - ₹${item.price}`;
+                cartItems.appendChild(listItem);
+            });
+
+            // Update total price
+            const total = cart.reduce((sum, item) => sum + item.price, 0);
+            document.getElementById('cart-total').innerText = total;
         }
 
-        document.querySelector('.menu-btn').addEventListener('click', function() {
-            document.querySelector('.menu').classList.toggle('open');
+        // Open the cart modal
+        document.getElementById('cart-link').addEventListener('click', function (e) {
+            e.preventDefault();
+            document.getElementById('cart-modal').style.display = 'flex';
+        });
+
+        // Close the cart modal
+        document.getElementById('close-cart-btn').addEventListener('click', function () {
+            document.getElementById('cart-modal').style.display = 'none';
         });
     </script>
 </body>

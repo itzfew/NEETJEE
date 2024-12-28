@@ -158,21 +158,32 @@
         currency: "INR"
       };
 
-      // Call API to create payment order (backend required for Cashfree API call)
-      const response = await fetch('/api/create-payment-order', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(order)
-      });
+      // Display loading message before API call
+      alert("Creating payment order...");
 
-      const result = await response.json();
+      try {
+        // Call API to create payment order (backend required for Cashfree API call)
+        const response = await fetch('/api/create-payment-order', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(order)
+        });
 
-      if (result.status === 'success') {
-        window.location.href = result.payment_url;
-      } else {
-        alert('Payment initiation failed.');
+        const result = await response.json();
+
+        // Debugging: Check the result from the server
+        console.log("API Response:", result);
+
+        if (result.status === 'success') {
+          // Redirect to Cashfree payment page
+          window.location.href = result.payment_url;
+        } else {
+          alert('Payment initiation failed: ' + result.message);
+        }
+      } catch (error) {
+        alert('An error occurred while initiating payment: ' + error.message);
       }
     });
 

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="logo">Digital Store</div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="checkout.html">Checkout</a>
+        </nav>
+    </header>
+
+    <section class="checkout">
+        <h2>Checkout</h2>
+
+        <div id="order-summary">
+            <h3>Order Summary</h3>
+            <p>Product: <span id="product-name"></span></p>
+            <p>Price: <span id="product-price"></span></p>
+        </div>
+
+        <form id="payment-form">
+            <label for="name">Name:</label>
+            <input type="text" id="name" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" required>
+
+            <label for="phone">Phone:</label>
+            <input type="tel" id="phone" required>
+
+            <button type="submit" id="pay-button">Pay Now</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Digital Store</p>
+    </footer>
+
+    <script src="https://sdk.cashfree.com/js/checkout.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

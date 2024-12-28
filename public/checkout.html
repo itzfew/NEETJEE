@@ -1,48 +1,183 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkout</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - Digital Book Store</title>
+  <style>
+    /* Global Styles for Checkout */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+    }
+
+    header {
+      background-color: #4CAF50;
+      color: white;
+      padding: 15px;
+      text-align: center;
+    }
+
+    header nav a {
+      margin: 0 15px;
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+    }
+
+    header nav a:hover {
+      text-decoration: underline;
+    }
+
+    .checkout {
+      padding: 20px;
+    }
+
+    #cart-items {
+      margin-bottom: 20px;
+    }
+
+    #cart-items .cart-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    form {
+      margin-top: 20px;
+    }
+
+    label {
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 15px;
+    }
+
+    button {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px;
+      width: 100%;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <div class="logo">Digital Store</div>
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="checkout.html">Checkout</a>
-        </nav>
-    </header>
+  <header>
+    <div class="logo">
+      <h1>Digital Book Store</h1>
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+    </nav>
+  </header>
 
-    <section class="checkout">
-        <h2>Checkout</h2>
+  <section class="checkout">
+    <h2>Your Cart</h2>
+    <div id="cart-items">
+      <!-- Cart items will be dynamically added here -->
+    </div>
 
-        <div id="order-summary">
-            <h3>Order Summary</h3>
-            <p>Product: <span id="product-name"></span></p>
-            <p>Price: <span id="product-price"></span></p>
-        </div>
+    <form id="checkout-form">
+      <h3>Shipping Details</h3>
+      <label for="name">Full Name:</label>
+      <input type="text" id="name" required>
 
-        <form id="payment-form">
-            <label for="name">Name:</label>
-            <input type="text" id="name" required>
+      <label for="address">Shipping Address:</label>
+      <textarea id="address" required></textarea>
 
-            <label for="email">Email:</label>
-            <input type="email" id="email" required>
+      <label for="email">Email Address:</label>
+      <input type="email" id="email" required>
 
-            <label for="phone">Phone:</label>
-            <input type="tel" id="phone" required>
+      <button type="submit">Proceed to Payment</button>
+    </form>
+  </section>
 
-            <button type="submit" id="pay-button">Pay Now</button>
-        </form>
-    </section>
+  <footer>
+    <p>© 2024 Digital Book Store</p>
+  </footer>
 
-    <footer>
-        <p>&copy; 2024 Digital Store</p>
-    </footer>
+  <script>
+    // Initialize cart data
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
-    <script src="https://sdk.cashfree.com/js/checkout.js"></script>
-    <script src="script.js"></script>
+    // Display cart items in checkout
+    function displayCartItems() {
+      const cartItemsContainer = document.getElementById('cart-items');
+      cartItemsContainer.innerHTML = '';  // Clear existing items
+
+      cart.forEach(item => {
+        const cartItem = document.createElement('div');
+        cartItem.classList.add('cart-item');
+        cartItem.innerHTML = `
+          <span>${item.name}</span>
+          <span>$${item.price}</span>
+        `;
+        cartItemsContainer.appendChild(cartItem);
+      });
+    }
+
+    // Proceed to payment (Cashfree)
+    document.getElementById('checkout-form').addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const address = document.getElementById('address').value;
+      const email = document.getElementById('email').value;
+
+      // Prepare order data
+      const order = {
+        customer_name: name,
+        customer_email: email,
+        customer_address: address,
+        amount: cart.reduce((total, item) => total + item.price, 0), // Total amount
+        currency: "INR"
+      };
+
+      // Call API to create payment order (backend required for Cashfree API call)
+      const response = await fetch('/api/create-payment-order', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(order)
+      });
+
+      const result = await response.json();
+
+      if (result.status === 'success') {
+        window.location.href = result.payment_url;
+      } else {
+        alert('Payment initiation failed.');
+      }
+    });
+
+    // Run this on load to display cart items
+    displayCartItems();
+  </script>
 </body>
 </html>

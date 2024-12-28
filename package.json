@@ -1,0 +1,19 @@
+{
+  "name": "digital-store",
+  "version": "1.0.0",
+  "dependencies": {
+    "express": "^4.17.1",
+    "axios": "^0.21.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "dev": "vercel dev"
+  },
+  "vercel": {
+    "functions": {
+      "api/**.js": {
+        "memory": 128
+      }
+    }
+  }
+}

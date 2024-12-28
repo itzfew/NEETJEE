@@ -1,42 +1,160 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Product Store</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Digital Book Store</title>
+  <style>
+    /* Global Styles */
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f9;
+    }
+
+    header {
+      background-color: #4CAF50;
+      color: white;
+      padding: 15px;
+      text-align: center;
+    }
+
+    header nav a {
+      margin: 0 15px;
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+    }
+
+    header nav a:hover {
+      text-decoration: underline;
+    }
+
+    header .cart {
+      display: inline-block;
+      margin-left: 20px;
+    }
+
+    .product-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      padding: 20px;
+    }
+
+    .product {
+      background-color: white;
+      border: 1px solid #ddd;
+      width: 200px;
+      padding: 15px;
+      margin: 15px;
+      text-align: center;
+      box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .product img {
+      width: 100%;
+      height: auto;
+    }
+
+    .product h2 {
+      font-size: 20px;
+      margin: 10px 0;
+    }
+
+    .product p {
+      font-size: 16px;
+      color: #333;
+    }
+
+    button.add-to-cart {
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      padding: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button.add-to-cart:hover {
+      background-color: #45a049;
+    }
+
+    footer {
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 10px;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
 </head>
 <body>
-    <header>
-        <div class="logo">Digital Store</div>
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="checkout.html">Checkout</a>
-        </nav>
-    </header>
+  <header>
+    <div class="logo">
+      <h1>Digital Book Store</h1>
+    </div>
+    <nav>
+      <a href="#">Home</a>
+      <a href="checkout.html">Checkout</a>
+      <div class="cart">
+        <a href="checkout.html">
+          Cart (<span id="cart-count">0</span>)
+        </a>
+      </div>
+    </nav>
+  </header>
 
-    <section class="products">
-        <h2>Our Digital Products</h2>
-        <div class="product-card">
-            <img src="product1.jpg" alt="Product 1">
-            <h3>Product 1</h3>
-            <p>Description of Product 1.</p>
-            <p>$10.00</p>
-            <a href="checkout.html?product=1&price=10" class="buy-now">Buy Now</a>
-        </div>
-        <div class="product-card">
-            <img src="product2.jpg" alt="Product 2">
-            <h3>Product 2</h3>
-            <p>Description of Product 2.</p>
-            <p>$15.00</p>
-            <a href="checkout.html?product=2&price=15" class="buy-now">Buy Now</a>
-        </div>
-    </section>
+  <section class="product-list">
+    <div class="product">
+      <img src="book1.jpg" alt="Book 1">
+      <h2>Book Title 1</h2>
+      <p>Price: $20</p>
+      <button class="add-to-cart" data-id="1" data-name="Book Title 1" data-price="20">Add to Cart</button>
+    </div>
+    <div class="product">
+      <img src="book2.jpg" alt="Book 2">
+      <h2>Book Title 2</h2>
+      <p>Price: $15</p>
+      <button class="add-to-cart" data-id="2" data-name="Book Title 2" data-price="15">Add to Cart</button>
+    </div>
+    <!-- More products can be added here -->
+  </section>
 
-    <footer>
-        <p>&copy; 2024 Digital Store</p>
-    </footer>
+  <footer>
+    <p>© 2024 Digital Book Store</p>
+  </footer>
 
-    <script src="script.js"></script>
+  <script>
+    // Initialize cart data
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    // Display cart count on every page load
+    function updateCartCount() {
+      const cartCount = cart.length;
+      document.getElementById('cart-count').textContent = cartCount;
+    }
+
+    // Add to cart functionality
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+      button.addEventListener('click', (event) => {
+        const product = {
+          id: event.target.getAttribute('data-id'),
+          name: event.target.getAttribute('data-name'),
+          price: parseFloat(event.target.getAttribute('data-price'))
+        };
+
+        cart.push(product);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartCount();
+      });
+    });
+
+    // Run this on load to update cart count
+    updateCartCount();
+  </script>
 </body>
 </html>
